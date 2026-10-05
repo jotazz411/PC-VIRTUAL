@@ -1,0 +1,41 @@
+name: PC Virtual Gamer
+
+on:
+  workflow_dispatch:
+
+jobs:
+  gamer-pc:
+    runs-on: windows-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: 🚀 Iniciar PC Virtual Gamer
+        shell: powershell
+        run: |
+          Write-Host "======================================"
+          Write-Host "      PC VIRTUAL GAMER"
+          Write-Host "======================================"
+
+          Write-Host "`n[CPU]"
+          Get-CimInstance Win32_Processor |
+            Select-Object Name, NumberOfCores, NumberOfLogicalProcessors
+
+          Write-Host "`n[RAM]"
+          $ram = Get-CimInstance Win32_ComputerSystem
+          Write-Host ("RAM: {0:N2} GB" -f ($ram.TotalPhysicalMemory / 1GB))
+
+          Write-Host "`n[GPU]"
+          Get-CimInstance Win32_VideoController |
+            Select-Object Name, DriverVersion
+
+          Write-Host "`n[DISCO]"
+          Get-PSDrive C |
+            Select-Object Used,Free
+
+          Write-Host "`n[DESEMPENHO]"
+          powercfg /setactive SCHEME_MIN
+
+          Write-Host "`n======================================"
+          Write-Host " PC VIRTUAL GAMER PRONTO!"
+          Write-Host " Modo de alto desempenho ativado."
+          Write-Host "======================================"
